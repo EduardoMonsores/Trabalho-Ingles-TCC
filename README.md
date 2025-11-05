@@ -1,4 +1,4 @@
-#TRABALHO DE INGLÊS TCC
+TRABALHO DE INGLÊS TCC
 
 🛡️ Cidadão Digital | Digital Citizen
 
