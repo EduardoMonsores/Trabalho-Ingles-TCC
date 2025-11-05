@@ -1,422 +1,649 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <!-- Configurações básicas do documento -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto: Cidadão Digital</title>
-    
-    <!-- Carregando Tailwind CSS (framework de estilo) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Carregando a fonte "Inter" do Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Estilos CSS personalizados -->
-    <style>
-        /* Aplicando a fonte Inter como padrão para todo o site */
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth; /* Adiciona rolagem suave ao clicar em links âncora */
+    <!-- Configurações básicas do documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto: Cidadão Digital</title>
+    
+    <!-- Carregando Tailwind CSS (framework de estilo) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- NOVIDADE: Carregando Chart.js para gráficos interativos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Carregando a fonte "Inter" do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Estilos CSS personalizados -->
+    <style>
+        /* Aplicando a fonte Inter como padrão para todo o site */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Adiciona rolagem suave ao clicar em links âncora */
+        }
+        /* Garante que o canvas seja responsivo dentro do contêiner do infográfico */
+        .chart-container {
+            position: relative;
+            height: 40vh; 
+            width: 100%;
         }
-    </style>
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 50vh; 
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Header (Cabeçalho) -->
-    <!-- O cabeçalho é fixo ("sticky") no topo ("top-0") e fica acima de outros elementos ("z-50") -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <!-- "container" centraliza o conteúdo e "flex" alinha os itens -->
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            
-            <!-- Título/Logo do Site -->
-            <div class="text-2xl font-bold text-blue-700 flex items-center">
-                <!-- Ícone de Escudo (SVG) -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-                Cidadão Digital
-            </div>
-            
-            <!-- Menu para Desktop (Links de Navegação) -->
-            <!-- "hidden md:flex" = escondido em telas pequenas (mobile), visível como flex em telas médias (desktop) -->
-            <div class="hidden md:flex items-center space-x-2">
-                <a href="#proposta" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Proposta</a>
-                <a href="#cidadania" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Cidadania Global</a>
-                <a href="#modulo" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Exemplo</a>
-                <a href="#poster" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors shadow-sm">Bilingual Poster</a>
-            </div>
-            
-            <!-- Botão de Menu para Mobile (apenas visual, não funcional) -->
-            <!-- "md:hidden" = visível apenas em telas pequenas, escondido em telas médias para cima -->
-            <div class="md:hidden">
-                <button class="text-gray-600 hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
-                </button>
-            </div>
-        </nav>
-    </header>
+    <!-- Header (Cabeçalho) -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Título/Logo do Site -->
+            <div class="text-2xl font-bold text-blue-700 flex items-center">
+                <!-- Ícone de Escudo (SVG) -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Cidadão Digital
+            </div>
+            
+            <!-- Menu para Desktop (Links de Navegação) -->
+            <div class="hidden md:flex items-center space-x-2">
+                <a href="#proposta" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Proposta</a>
+                <a href="#cidadania" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Cidadania Global</a>
+                <!-- NOVO LINK DO INFOGRÁFICO -->
+                <a href="#riscos-digitais-rj" class="px-3 py-2 rounded-md text-red-600 font-semibold hover:text-red-700 hover:bg-red-50 transition-colors">Riscos Digitais RJ</a>
+                <!-- FIM NOVO LINK -->
+                <a href="#modulo" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Exemplo</a>
+                <a href="#poster" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors shadow-sm">Bilingual Poster</a>
+            </div>
+            
+            <!-- Botão de Menu para Mobile (apenas visual, não funcional) -->
+            <div class="md:hidden">
+                <button class="text-gray-600 hover:text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-    <!-- Conteúdo Principal da Página -->
-    <main>
-    
-        <!-- Seção Principal (Hero) -->
-        <!-- Esta é a primeira coisa que o usuário vê. Usa um gradiente de fundo. -->
-        <section class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white pt-24 pb-32 px-6">
-            <div class="container mx-auto text-center max-w-4xl">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Projeto: Cidadão Digital</h1>
-                <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
-                    Uma plataforma educativa para conscientizar sobre <strong>Segurança Online</strong> e <strong>Ética Digital</strong> no mundo globalizado.
-                </p>
-                <!-- Botão de "Call to Action" (Chamada para Ação) -->
-                <a href="#proposta" class="mt-10 inline-block bg-white text-blue-700 font-bold py-3 px-8 rounded-full hover:bg-gray-100 shadow-lg transform hover:scale-105 transition-all">
-                    Conheça a Proposta
-                </a>
+    <!-- Conteúdo Principal da Página -->
+    <main>
+    
+        <!-- Seção Principal (Hero) -->
+        <section class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white pt-24 pb-32 px-6">
+            <div class="container mx-auto text-center max-w-4xl">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Projeto: Cidadão Digital</h1>
+                <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+                    Uma plataforma educativa para conscientizar sobre <strong>Segurança Online</strong> e <strong>Ética Digital</strong> no mundo globalizado.
+                </p>
+                <!-- Botão de "Call to Action" (Chamada para Ação) -->
+                <a href="#proposta" class="mt-10 inline-block bg-white text-blue-700 font-bold py-3 px-8 rounded-full hover:bg-gray-100 shadow-lg transform hover:scale-105 transition-all">
+                    Conheça a Proposta
+                </a>
+            </div>
+        </section>
+
+        <!-- Seção: Proposta do Projeto -->
+        <section id="proposta" class="py-20 bg-white scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">Proposta do Projeto</h2>
+                <!-- Card de conteúdo principal da seção -->
+                <div class="bg-gray-50 p-8 md:p-10 rounded-xl shadow-xl border border-gray-200">
+                    
+                    <!-- Item 1: Nome do Projeto -->
+                    <div class="flex items-start mb-6">
+                        <div class="flex-shrink-0">
+                            <!-- Ícone SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <strong class="text-blue-600 text-lg font-semibold">Nome do Projeto:</strong>
+                            <p class="text-gray-700">Cidadão Digital</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 2: Objetivo Principal -->
+                    <div class="flex items-start mb-6">
+                        <div class="flex-shrink-0">
+                           <!-- Ícone SVG -->
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                           </svg>
+                        </div>
+                        <div class="ml-4">
+                            <strong class="text-blue-600 text-lg font-semibold">Objetivo Principal:</strong>
+                            <p class="text-gray-700 leading-relaxed">Educar jovens (estudantes) sobre os desafios globais da segurança online, ética digital e o combate à desinformação, resolvendo o problema da falta de conscientização sobre o uso da tecnologia.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Público-alvo -->
+                    <div class="flex items-start mb-6">
+                         <div class="flex-shrink-0">
+                            <!-- Ícone SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <strong class="text-blue-600 text-lg font-semibold">Público-alvo:</strong>
+                            <p class="text-gray-700">Estudantes do ensino fundamental e médio (12-18 anos).</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 4: Ferramentas Tecnológicas -->
+                    <div class="flex items-start">
+                         <div class="flex-shrink-0">
+                            <!-- Ícone SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <strong class="text-blue-600 text-lg font-semibold">Ferramentas Tecnológicas:</strong>
+                            <p class="text-gray-700 leading-relaxed">Um site interativo (HTML, CSS, JavaScript) que funciona como um "jogo educativo online", com módulos de aprendizado curtos, quizzes e dicas práticas.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção: Cidadania Global -->
+        <section id="cidadania" class="py-20 bg-gray-50 scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">Como Promovemos a Cidadania Global</h2>
+                <!-- Layout em 2 colunas ("grid") para telas médias e maiores -->
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- Coluna de Texto (Lista de pontos) -->
+                    <div class="bg-white p-8 md:p-10 rounded-xl shadow-xl border border-gray-200">
+                        <p class="mb-6 text-lg text-gray-700 leading-relaxed">Nosso projeto ajuda a formar melhores cidadãos globais ao focar em pilares essenciais da vida digital:</p>
+                        <!-- Lista de tópicos com ícones de "check" -->
+                        <ul class="space-y-4">
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-gray-700 text-lg">Promover a <strong>educação em segurança online</strong>.</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-gray-700 text-lg">Incentivar o <strong>pensamento crítico</strong> contra desinformação.</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-gray-700 text-lg">Ensinar sobre <strong>ética digital</strong> e respeito online.</span>
+                            </li>
+                             <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-gray-700 text-lg">Encorajar a <strong>colaboração e inclusão digital</strong>.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Coluna de Imagem -->
+                    <div>
+                        <!-- Imagem de Placeholder (placehold.co) -->
+                        <img src="https://placehold.co/600x400/93C5FD/1E40AF?text=Cidadania+Global" 
+                             alt="Ilustração de Cidadania Global" 
+                             class="rounded-xl shadow-xl w-full h-auto object-cover"
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/93C5FD/1E40AF?text=Cidadania+Global';">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: Infográfico "Jornada do Cidadão Digital" (Antigo) -->
+        <section id="infografico" class="py-20 bg-white scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">A Jornada do Cidadão Digital</h2>
+                
+                <!-- Container do Infográfico -->
+                <div class="relative">
+                    
+                    <!-- Linha de conexão (Aparece em telas médias ou maiores) -->
+                    <div class="hidden md:block absolute top-10 left-0 w-full mt-10">
+                        <div class="w-full h-1 bg-blue-200"></div>
+                    </div>
+
+                    <!-- Passos do infográfico (em 4 colunas) -->
+                    <div class="relative grid md:grid-cols-4 gap-12" style="z-index: 2;">
+                        
+                        <!-- Passo 1: Consciência -->
+                        <div class="text-center">
+                            <!-- Círculo com Ícone -->
+                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
+                                <!-- Ícone SVG "Olho" -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                            <!-- Conteúdo de Texto (Card) -->
+                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">1. Consciência</h3>
+                                <p class="text-gray-600">Entenda sua pegada digital e o valor dos seus dados pessoais.</p>
+                            </div>
+                        </div>
+
+                        <!-- Passo 2: Segurança -->
+                        <div class="text-center">
+                            <!-- Círculo com Ícone -->
+                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
+                                <!-- Ícone SVG "Escudo" -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </div>
+                            <!-- Conteúdo de Texto (Card) -->
+                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">2. Segurança</h3>
+                                <p class="text-gray-600">Adote práticas seguras, como senhas fortes e verificação de links.</p>
+                            </div>
+                        </div>
+
+                        <!-- Passo 3: Ética -->
+                        <div class="text-center">
+                            <!-- Círculo com Ícone -->
+                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
+                                <!-- Ícone SVG "Usuários" -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2m-8-3a4 4 0 11-8 0 4 4 0 018 0zM12 20v-2m0 0a4 4 0 100-8 4 4 0 000 8z" />
+                                </svg>
+                            </div>
+                            <!-- Conteúdo de Texto (Card) -->
+                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">3. Ética</h3>
+                                <p class="text-gray-600">Aja com respeito, verifique fatos e promova um ambiente positivo.</p>
+                            </div>
+                        </div>
+
+                        <!-- Passo 4: Ação -->
+                        <div class="text-center">
+                            <!-- Círculo com Ícone -->
+                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
+                                <!-- Ícone SVG "Voz/Megafone" -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1M11 3v2.882m0 0a1.76 1.76 0 013.417.592l2.147 6.15m-6.133-1.55a4.001 4.001 0 00-3.23 3.322M11 19.24v-2.882m0 0a1.76 1.76 0 013.417.592l2.147 6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1" />
+                                </svg>
+                            </div>
+                            <!-- Conteúdo de Texto (Card) -->
+                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">4. Ação</h3>
+                                <p class="text-gray-600">Use a tecnologia para colaborar e criar um impacto positivo.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- FIM DA SEÇÃO Infográfico (Jornada) -->
+
+
+        <!-- NOVIDADE: SEÇÃO DE INFOGRÁFICO INTERATIVO DE RISCOS DIGITAIS RJ -->
+        <section id="riscos-digitais-rj" class="py-20 bg-gray-100 scroll-mt-20">
+            <div class="container mx-auto max-w-7xl bg-white rounded-2xl shadow-2xl border border-gray-200">
+
+                <!-- Título Principal do Infográfico -->
+                <header class="bg-red-700 text-white p-6 md:p-10 text-center rounded-t-2xl">
+                    <h1 class="text-3xl md:text-4xl font-extrabold mb-1">
+                        Mapa de Riscos Digitais no Rio de Janeiro
+                    </h1>
+                    <h2 class="text-xl md:text-2xl font-light text-red-100">
+                        Análise de Golpes e Vazamentos de Dados (LGPD)
+                    </h2>
+                     <p class="mt-2 text-sm text-red-200">
+                         (Dados Baseados em Relatórios Oficiais e Tendências, Simulados para Representação Gráfica)
+                     </p>
+                </header>
+
+                <!-- Corpo do Infográfico - Cards de Métricas Chave -->
+                <section class="p-6 md:p-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div class="bg-white p-5 rounded-xl shadow-lg border-b-4 border-red-500 text-center">
+                        <p class="text-xs font-semibold text-gray-500 uppercase">Casos Notificados (Ano)</p>
+                        <p class="text-3xl font-extrabold text-red-700 mt-1">8.900</p>
+                        <p class="text-sm text-gray-500">Total simulado - Tendência de alta</p>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-xl shadow-lg border-b-4 border-red-500 text-center">
+                        <p class="text-xs font-semibold text-gray-500 uppercase">Principal Ameaça</p>
+                        <p class="text-3xl font-extrabold text-red-700 mt-1">Phishing</p>
+                        <p class="text-sm text-gray-500">72% dos casos (média nacional)</p>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-xl shadow-lg border-b-4 border-red-500 text-center">
+                        <p class="text-xs font-semibold text-gray-500 uppercase">Maior Vulnerabilidade</p>
+                        <p class="text-3xl font-extrabold text-red-700 mt-1">36-55</p>
+                        <p class="text-sm text-gray-500">Faixa etária mais visada (ativos financeiramente)</p>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-xl shadow-lg border-b-4 border-red-500 text-center">
+                        <p class="text-xs font-semibold text-gray-500 uppercase">Aumento Mensal</p>
+                        <p class="text-3xl font-extrabold text-red-700 mt-1">+12.3%</p>
+                        <p class="text-sm text-gray-500">Taxa média de crescimento de incidentes</p>
+                    </div>
+                    
+                </section>
+
+                <!-- Seção de Gráficos Interativos -->
+                <section class="p-6 md:p-10">
+                    <div class="grid lg:grid-cols-2 gap-8">
+
+                        <!-- Gráfico 1: Tipos de Golpes mais Comuns (Barra) -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">
+                                Distribuição de Golpes de Segurança de Dados
+                            </h3>
+                            <div class="chart-container">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Gráfico 2: Evolução Mensal de Notificações (Linha) -->
+                        <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">
+                                Evolução Mensal de Notificações de Violação (LGPD)
+                            </h3>
+                            <div class="chart-container">
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Gráfico 3 (Linha completa): Distribuição Etária das Vítimas (Pizza/Rosca) -->
+                        <div class="lg:col-span-2 bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 text-center">
+                                Distribuição de Vítimas por Faixa Etária (Percentual)
+                            </h3>
+                            <div class="chart-container mx-auto max-w-xl">
+                                <canvas id="doughnutChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção de Ação e Dicas -->
+                <section class="bg-red-50 p-8 md:p-10 rounded-b-2xl">
+                    <h3 class="text-2xl font-bold text-red-800 mb-4 text-center">
+                        A LGPD em Ação: Seja um Cidadão Digital Consciente!
+                    </h3>
+                    <p class="text-gray-700 text-center max-w-3xl mx-auto mb-6">
+                        A Lei Geral de Proteção de Dados visa proteger seus direitos. A melhor defesa é a conscientização e a adoção de medidas simples de segurança.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
+                        <a href="#modulo" class="bg-red-600 text-white font-semibold py-3 px-6 rounded-full text-center shadow-lg hover:bg-red-700 transition-colors">
+                            Verifique Nossos Módulos de Segurança
+                        </a>
+                        <a href="#" class="bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-full text-center shadow-lg hover:bg-gray-400 transition-colors">
+                            Relate uma Fraude (Fictício)
+                        </a>
+                    </div>
+                </section>
+
             </div>
         </section>
+        <!-- FIM NOVIDADE: SEÇÃO DE INFOGRÁFICO INTERATIVO -->
 
-        <!-- Seção: Proposta do Projeto -->
-        <!-- "scroll-mt-20" adiciona uma margem no topo ao rolar (para não ficar escondido atrás do header) -->
-        <section id="proposta" class="py-20 bg-white scroll-mt-20">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">Proposta do Projeto</h2>
-                <!-- Card de conteúdo principal da seção -->
-                <div class="bg-gray-50 p-8 md:p-10 rounded-xl shadow-xl border border-gray-200">
-                    
-                    <!-- Item 1: Nome do Projeto -->
-                    <div class="flex items-start mb-6">
-                        <div class="flex-shrink-0">
-                            <!-- Ícone SVG -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <strong class="text-blue-600 text-lg font-semibold">Nome do Projeto:</strong>
-                            <p class="text-gray-700">Cidadão Digital</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Item 2: Objetivo Principal -->
-                    <div class="flex items-start mb-6">
-                        <div class="flex-shrink-0">
-                           <!-- Ícone SVG -->
-                           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                           </svg>
-                        </div>
-                        <div class="ml-4">
-                            <strong class="text-blue-600 text-lg font-semibold">Objetivo Principal:</strong>
-                            <p class="text-gray-700 leading-relaxed">Educar jovens (estudantes) sobre os desafios globais da segurança online, ética digital e o combate à desinformação, resolvendo o problema da falta de conscientização sobre o uso da tecnologia.</p>
-                        </div>
-                    </div>
+        <!-- Seção: Módulo de Exemplo (Conteúdo) -->
+        <section id="modulo" class="py-20 bg-gray-50 scroll-mt-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900">Módulos Educativos</h2>
+                <p class="text-center text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">Este seria um dos tópicos do nosso site educativo. (Baseado no tema "segurança online").</p>
+                
+                <!-- Grade de 3 colunas para os cards dos módulos -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1: Dados Pessoais -->
+                    <!-- "overflow-hidden" é necessário para que a imagem não "vaze" dos cantos arredondados -->
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-200 transform transition duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden">
+                        <!-- Imagem do Card -->
+                        <img src="https://placehold.co/600x400/BFDBFE/1E40AF?text=Dados+Pessoais" 
+                             alt="Ilustração sobre Dados Pessoais" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/BFDBFE/1E40AF?text=Dados+Pessoais';">
+                        <!-- Conteúdo de texto do Card -->
+                        <div class="p-8">
+                            <!-- Ícone SVG "Usuário" -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-3">O que são Dados Pessoais?</h3>
+                            <p class="mb-4 text-gray-600 leading-relaxed">É qualquer informação que possa identificar você.</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Nome, CPF, RG</li>
+                                <li>Endereço e E-mail</li>
+                                <li>Localização (GPS)</li>
+                                <li>Fotos e Vídeos</li>
+                            </ul>
+                        </div>
+                    </div>
 
-                    <!-- Item 3: Público-alvo -->
-                    <div class="flex items-start mb-6">
-                         <div class="flex-shrink-0">
-                            <!-- Ícone SVG -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <strong class="text-blue-600 text-lg font-semibold">Público-alvo:</strong>
-                            <p class="text-gray-700">Estudantes do ensino fundamental e médio (12-18 anos).</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Item 4: Ferramentas Tecnológicas -->
-                    <div class="flex items-start">
-                         <div class="flex-shrink-0">
-                            <!-- Ícone SVG -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <strong class="text-blue-600 text-lg font-semibold">Ferramentas Tecnológicas:</strong>
-                            <p class="text-gray-700 leading-relaxed">Um site interativo (HTML, CSS, JavaScript) que funciona como um "jogo educativo online", com módulos de aprendizado curtos, quizzes e dicas práticas.</p>
-                        </div>
-                    </div>
+                    <!-- Card 2: Ética Digital -->
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-200 transform transition duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden">
+                        <!-- Imagem do Card -->
+                        <img src="https://placehold.co/600x400/BFDBFE/1E40AF?text=Ética+Digital" 
+                             alt="Ilustração sobre Ética Digital" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/BFDBFE/1E40AF?text=Ética+Digital';">
+                        <!-- Conteúdo de texto do Card -->
+                        <div class="p-8">
+                             <!-- Ícone SVG "Emoji" -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-3">O que é Ética Digital?</h3>
+                            <p class="mb-4 text-gray-600 leading-relaxed">É o "guia de boa conduta" online. A ética digital envolve:</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li><strong>Respeito</strong> nos comentários.</li>
+                                <li>Não compartilhar <strong>notícias falsas</strong>.</li>
+                                <li>Respeitar a <strong>privacidade</strong> dos outros.</li>
+                                <li>Dar crédito ao autor original.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 3: Dicas de Proteção -->
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-200 transform transition duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden">
+                        <!-- Imagem do Card -->
+                        <img src="https://placehold.co/600x400/BFDBFE/1E40AF?text=Proteção+Online" 
+                             alt="Ilustração sobre Proteção Online" 
+                             class="w-full h-48 object-cover"
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/BFDBFE/1E40AF?text=Proteção+Online';">
+                        <!-- Conteúdo de texto do Card -->
+                        <div class="p-8">
+                            <!-- Ícone SVG "Cadeado" -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-3">Dicas para se Proteger</h3>
+                            <p class="mb-4 text-gray-600 leading-relaxed">Como cidadão digital, você pode:</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Usar <strong>senhas fortes</strong>.</li>
+                                <li>Não clicar em <strong>links suspeitos</strong>.</li>
+                                <li>Revisar as <strong>permissões</strong> dos apps.</li>
+                                <li>Pensar antes de <strong>postar</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                </div>
-            </div>
-        </section>
+        <!-- Seção: Bilingual Poster -->
+        <!-- Esta seção tem um fundo escuro ("bg-gray-800") para se destacar -->
+        <section id="poster" class="py-20 bg-gray-800 text-white scroll-mt-20">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">Conteúdo para o Bilingual Poster</h2>
+                <p class="text-center text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">Aqui está o texto pronto em Inglês para o seu poster ou slide, como no exemplo "Think Global, Code Local".</p>
+                
+                <!-- Card de conteúdo do poster -->
+                <div class="bg-gray-900 p-8 rounded-xl shadow-2xl ring-1 ring-blue-500/30">
+                    <p class="text-lg font-semibold"><strong class="text-blue-300">Project Title:</strong> Digital Citizen</p>
+                    <br>
+                    <p class="text-lg font-semibold"><strong class="text-blue-300">Slogan:</strong> Technology for a Safer and More Ethical World.</p>
+                    <br>
+                    <p class="text-lg font-semibold text-blue-300">How the project promotes global citizenship:</p>
+                    <ul class="list-disc list-inside ml-4 mt-3 space-y-2 text-gray-200">
+                        <li>Supports online safety and digital ethics education.</li>
+                        <li>Encourages critical thinking to fight misinformation.</li>
+                        <li>Promotes respect and diversity online.</li>
+                        <li>Empowers students to be responsible digital citizens.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        <!-- Seção: Cidadania Global -->
-        <section id="cidadania" class="py-20 bg-gray-50 scroll-mt-20">
-            <div class="container mx-auto px-6 max-w-6xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">Como Promovemos a Cidadania Global</h2>
-                <!-- Layout em 2 colunas ("grid") para telas médias e maiores -->
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    
-                    <!-- Coluna de Texto (Lista de pontos) -->
-                    <div class="bg-white p-8 md:p-10 rounded-xl shadow-xl border border-gray-200">
-                        <p class="mb-6 text-lg text-gray-700 leading-relaxed">Nosso projeto ajuda a formar melhores cidadãos globais ao focar em pilares essenciais da vida digital:</p>
-                        <!-- Lista de tópicos com ícones de "check" -->
-                        <ul class="space-y-4">
-                            <li class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span class="text-gray-700 text-lg">Promover a <strong>educação em segurança online</strong>.</span>
-                            </li>
-                            <li class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span class="text-gray-700 text-lg">Incentivar o <strong>pensamento crítico</strong> contra desinformação.</span>
-                            </li>
-                            <li class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span class="text-gray-700 text-lg">Ensinar sobre <strong>ética digital</strong> e respeito online.</span>
-                            </li>
-                             <li class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span class="text-gray-700 text-lg">Encorajar a <strong>colaboração e inclusão digital</strong>.</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Coluna de Imagem -->
-                    <div>
-                        <!-- Imagem de Placeholder (placehold.co) -->
-                        <img src="https://placehold.co/600x400/93C5FD/1E40AF?text=Cidadania+Global" 
-                             alt="Ilustração de Cidadania Global" 
-                             class="rounded-xl shadow-xl w-full h-auto object-cover"
-                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/93C5FD/1E40AF?text=Cidadania+Global';">
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Footer (Rodapé) -->
+    <footer class="bg-gray-900 text-white p-10">
+        <div class="container mx-auto text-center">
+            <p class="font-bold text-lg mb-2">Projeto de Cidadania Global e Tecnologia</p>
+            <p class="text-gray-400">
+                (Entrega: 11/11/2025)
+            </p>
+            <p class="text-gray-500 text-sm mt-6">
+                Uma proposta de projeto web.
+            </p>
+        </div>
+    </footer>
 
-        <!-- SEÇÃO: Infográfico "Jornada do Cidadão Digital" -->
-        <section id="infografico" class="py-20 bg-white scroll-mt-20">
-            <div class="container mx-auto px-6 max-w-6xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">A Jornada do Cidadão Digital</h2>
-                
-                <!-- Container do Infográfico -->
-                <div class="relative">
-                    
-                    <!-- Linha de conexão (Aparece em telas médias ou maiores) -->
-                    <!-- Esta linha azul conecta os passos do infográfico -->
-                    <div class="hidden md:block absolute top-10 left-0 w-full mt-10">
-                        <div class="w-full h-1 bg-blue-200"></div>
-                    </div>
+    <!-- Script de Inicialização dos Gráficos (Baseado em infografico_interativo.html) -->
+    <script>
+        // Função utilitária para converter base de cores
+        const TRANSPARENT = 'rgba(0, 0, 0, 0)';
+        const CHART_COLORS = {
+            red: 'rgb(239, 68, 68)',       // Tailwind red-500
+            blue: 'rgb(59, 130, 246)',    // Tailwind blue-500
+            yellow: 'rgb(250, 204, 21)',  // Tailwind yellow-500
+            green: 'rgb(16, 185, 129)',   // Tailwind green-500
+        };
 
-                    <!-- Passos do infográfico (em 4 colunas) -->
-                    <!-- "z-index: 2" garante que os passos fiquem por cima da linha azul -->
-                    <div class="relative grid md:grid-cols-4 gap-12" style="z-index: 2;">
-                        
-                        <!-- Passo 1: Consciência -->
-                        <div class="text-center">
-                            <!-- Círculo com Ícone -->
-                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
-                                <!-- Ícone SVG "Olho" -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </div>
-                            <!-- Conteúdo de Texto (Card) -->
-                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">1. Consciência</h3>
-                                <p class="text-gray-600">Entenda sua pegada digital e o valor dos seus dados pessoais.</p>
-                            </div>
-                        </div>
+        // Dados Baseados em Relatórios Públicos e Tendências Nacionais (Simulados)
+        const mockData = {
+            // Chart 1: Tipos de Golpes
+            golpes: {
+                labels: ['Phishing (Engenharia Social)', 'Vazamento de Dados', 'Fraude Pix / Boleto', 'Ransomware / Ataques Servidor'],
+                data: [640, 150, 60, 40], // Phishing dominante (72%)
+                backgroundColor: [CHART_COLORS.red, CHART_COLORS.blue, CHART_COLORS.yellow, CHART_COLORS.green],
+                borderColor: [CHART_COLORS.red, CHART_COLORS.blue, CHART_COLORS.yellow, CHART_COLORS.green],
+            },
+            // Chart 2: Evolução Mensal (Tendência de Alta)
+            evolucao: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                data: [1200, 1400, 1500, 1600, 1700, 1500], // Simulação de pico em Maio
+            },
+            // Chart 3: Vítimas por Idade (Foco no público financeiramente ativo)
+            vitimasIdade: {
+                labels: ['18-35 anos', '36-55 anos', '56-70 anos', 'Mais de 70 anos'],
+                data: [30, 45, 15, 10], // 45% na faixa 36-55
+                backgroundColor: [CHART_COLORS.blue, CHART_COLORS.red, CHART_COLORS.green, CHART_COLORS.yellow],
+            }
+        };
 
-                        <!-- Passo 2: Segurança -->
-                        <div class="text-center">
-                            <!-- Círculo com Ícone -->
-                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
-                                <!-- Ícone SVG "Escudo" -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
-                            </div>
-                            <!-- Conteúdo de Texto (Card) -->
-                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">2. Segurança</h3>
-                                <p class="text-gray-600">Adote práticas seguras, como senhas fortes e verificação de links.</p>
-                            </div>
-                        </div>
+        // --- Inicialização dos Gráficos ---
 
-                        <!-- Passo 3: Ética -->
-                        <div class="text-center">
-                            <!-- Círculo com Ícone -->
-                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
-                                <!-- Ícone SVG "Usuários" -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2m-8-3a4 4 0 11-8 0 4 4 0 018 0zM12 20v-2m0 0a4 4 0 100-8 4 4 0 000 8z" />
-                                </svg>
-                            </div>
-                            <!-- Conteúdo de Texto (Card) -->
-                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">3. Ética</h3>
-                                <p class="text-gray-600">Aja com respeito, verifique fatos e promova um ambiente positivo.</p>
-                            </div>
-                        </div>
+        // Gráfico de Barras (Tipos de Golpes)
+        new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: mockData.golpes.labels,
+                datasets: [{
+                    label: 'Número de Ocorrências (Simulado)',
+                    data: mockData.golpes.data,
+                    backgroundColor: mockData.golpes.backgroundColor,
+                    borderColor: mockData.golpes.borderColor,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
 
-                        <!-- Passo 4: Ação -->
-                        <div class="text-center">
-                            <!-- Círculo com Ícone -->
-                            <div class="flex items-center justify-center h-20 w-20 bg-blue-100 text-blue-600 rounded-full mx-auto mb-4 ring-8 ring-white shadow-lg">
-                                <!-- Ícone SVG "Voz/Megafone" -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1M11 3v2.882m0 0a1.76 1.76 0 013.417.592l2.147 6.15m-6.133-1.55a4.001 4.001 0 00-3.23 3.322M11 19.24v-2.882m0 0a1.76 1.76 0 013.417.592l2.147 6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1" />
-                                </svg>
-                            </div>
-                            <!-- Conteúdo de Texto (Card) -->
-                            <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">4. Ação</h3>
-                                <p class="text-gray-600">Use a tecnologia para colaborar e criar um impacto positivo.</p>
-                            </div>
-                        </div>
+        // Gráfico de Linha (Evolução Mensal)
+        new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels: mockData.evolucao.labels,
+                datasets: [{
+                    label: 'Notificações por Mês',
+                    data: mockData.evolucao.data,
+                    backgroundColor: CHART_COLORS.red + '40', // 40 = 25% de opacidade
+                    borderColor: CHART_COLORS.red,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                         mode: 'index',
+                         intersect: false
+                    }
+                }
+            }
+        });
 
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- FIM DA SEÇÃO Infográfico -->
+        // Gráfico de Rosca (Distribuição Etária)
+        new Chart(document.getElementById('doughnutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: mockData.vitimasIdade.labels,
+                datasets: [{
+                    label: 'Proporção de Vítimas',
+                    data: mockData.vitimasIdade.data,
+                    backgroundColor: mockData.vitimasIdade.backgroundColor,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
 
-        <!-- Seção: Módulo de Exemplo (Conteúdo) -->
-        <section id="modulo" class="py-20 bg-gray-50 scroll-mt-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900">Módulos Educativos</h2>
-                <p class="text-center text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">Este seria um dos tópicos do nosso site educativo. (Baseado no tema "segurança online").</p>
-                
-                <!-- Grade de 3 colunas para os cards dos módulos -->
-                <div class="grid md:grid-cols-3 gap-8">
-                    
-                    <!-- Card 1: Dados Pessoais -->
-                    <!-- "overflow-hidden" é necessário para que a imagem não "vaze" dos cantos arredondados -->
-                    <div class="bg-white rounded-xl shadow-lg border border-gray-200 transform transition duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden">
-                        <!-- Imagem do Card -->
-                        <img src="https://placehold.co/600x400/BFDBFE/1E40AF?text=Dados+Pessoais" 
-                             alt="Ilustração sobre Dados Pessoais" 
-                             class="w-full h-48 object-cover"
-                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/BFDBFE/1E40AF?text=Dados+Pessoais';">
-                        <!-- Conteúdo de texto do Card -->
-                        <div class="p-8">
-                            <!-- Ícone SVG "Usuário" -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">O que são Dados Pessoais?</h3>
-                            <p class="mb-4 text-gray-600 leading-relaxed">É qualquer informação que possa identificar você.</p>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1">
-                                <li>Nome, CPF, RG</li>
-                                <li>Endereço e E-mail</li>
-                                <li>Localização (GPS)</li>
-                                <li>Fotos e Vídeos</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Ética Digital -->
-                    <div class="bg-white rounded-xl shadow-lg border border-gray-200 transform transition duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden">
-                        <!-- Imagem do Card -->
-                        <img src="https://placehold.co/600x400/BFDBFE/1E40AF?text=Ética+Digital" 
-                             alt="Ilustração sobre Ética Digital" 
-                             class="w-full h-48 object-cover"
-                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/BFDBFE/1E40AF?text=Ética+Digital';">
-                        <!-- Conteúdo de texto do Card -->
-                        <div class="p-8">
-                             <!-- Ícone SVG "Emoji" -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">O que é Ética Digital?</h3>
-                            <p class="mb-4 text-gray-600 leading-relaxed">É o "guia de boa conduta" online. A ética digital envolve:</p>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1">
-                                <li><strong>Respeito</strong> nos comentários.</li>
-                                <li>Não compartilhar <strong>notícias falsas</strong>.</li>
-                                <li>Respeitar a <strong>privacidade</strong> dos outros.</li>
-                                <li>Dar crédito ao autor original.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- Card 3: Dicas de Proteção -->
-                    <div class="bg-white rounded-xl shadow-lg border border-gray-200 transform transition duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden">
-                        <!-- Imagem do Card -->
-                        <img src="https://placehold.co/600x400/BFDBFE/1E40AF?text=Proteção+Online" 
-                             alt="Ilustração sobre Proteção Online" 
-                             class="w-full h-48 object-cover"
-                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/BFDBFE/1E40AF?text=Proteção+Online';">
-                        <!-- Conteúdo de texto do Card -->
-                        <div class="p-8">
-                            <!-- Ícone SVG "Cadeado" -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">Dicas para se Proteger</h3>
-                            <p class="mb-4 text-gray-600 leading-relaxed">Como cidadão digital, você pode:</p>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1">
-                                <li>Usar <strong>senhas fortes</strong>.</li>
-                                <li>Não clicar em <strong>links suspeitos</strong>.</li>
-                                <li>Revisar as <strong>permissões</strong> dos apps.</li>
-                                <li>Pensar antes de <strong>postar</strong>.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção: Bilingual Poster -->
-        <!-- Esta seção tem um fundo escuro ("bg-gray-800") para se destacar -->
-        <section id="poster" class="py-20 bg-gray-800 text-white scroll-mt-20">
-            <div class="container mx-auto px-6 max-w-3xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">Conteúdo para o Bilingual Poster</h2>
-                <p class="text-center text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">Aqui está o texto pronto em Inglês para o seu poster ou slide, como no exemplo "Think Global, Code Local".</p>
-                
-                <!-- Card de conteúdo do poster -->
-                <div class="bg-gray-900 p-8 rounded-xl shadow-2xl ring-1 ring-blue-500/30">
-                    <p class="text-lg font-semibold"><strong class="text-blue-300">Project Title:</strong> Trabalho de Inglês</p>
-                    <br>
-                    <p class="text-lg font-semibold"><strong class="text-blue-300">Slogan:</strong> Technology for a Safer and More Ethical World.</p>
-                    <br>
-                    <p class="text-lg font-semibold text-blue-300">How the project promotes global citizenship:</p>
-                    <ul class="list-disc list-inside ml-4 mt-3 space-y-2 text-gray-200">
-                        <li>Supports online safety and digital ethics education.</li>
-                        <li>Encourages critical thinking to fight misinformation.</li>
-                        <li>Promotes respect and diversity online.</li>
-                        <li>Empowers students to be responsible digital citizens.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer (Rodapé) -->
-    <footer class="bg-gray-900 text-white p-10">
-        <div class="container mx-auto text-center">
-            <p class="font-bold text-lg mb-2">Projeto de Cidadania Global e Tecnologia</p>
-            <p class="text-gray-400">
-               
-            </p>
-            <p class="text-gray-500 text-sm mt-6">
-                Uma proposta de projeto web. 
-            </p>
-        </div>
-    </footer>
-
+    </script>
 </body>
 
 </html>
-
-
-
-
-
-
