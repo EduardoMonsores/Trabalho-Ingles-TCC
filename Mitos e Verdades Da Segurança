@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proteção Digital - Cidadão Digital</title>
+    <!-- Carregando Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Aplicando a fonte Inter como padrão */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Adiciona rolagem suave */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-blue-700 flex items-center">
+                <!-- Ícone de Escudo -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Cidadão Digital
+            </a>
+            <!-- Menu para Desktop (Links apontam para o index.html) -->
+            <div class="hidden md:flex items-center space-x-2">
+                <a href="index.html#proposta" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Proposta</a>
+                <a href="index.html#cidadania" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Cidadania Global</a>
+                <a href="index.html#modulo" class="px-3 py-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">Exemplo</a>
+                <!-- LINK ATIVO -->
+                <a href="protecao.html" class="px-3 py-2 rounded-md font-bold text-blue-600 bg-blue-50 transition-colors">Proteção</a>
+                <a href="index.html#poster" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors shadow-sm">Bilingual Poster</a>
+            </div>
+            <!-- Botão de Menu para Mobile (apenas visual) -->
+            <div class="md:hidden">
+                <button class="text-gray-600 hover:text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Seção Principal (Hero) da nova página -->
+    <main>
+        <section class="relative bg-gradient-to-r from-purple-600 to-indigo-800 text-white pt-24 pb-32 px-6">
+            <div class="container mx-auto text-center max-w-4xl">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Mitos e Verdades da Segurança</h1>
+                <p class="text-lg md:text-xl text-purple-100 max-w-2xl mx-auto leading-relaxed">
+                    Desvende curiosidades e aprenda dicas essenciais que vão além do óbvio para se proteger no mundo digital.
+                </p>
+            </div>
+        </section>
+
+        <!-- Seção de Curiosidades -->
+        <section id="curiosidades" class="py-20 bg-white">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">Você Sabia?</h2>
+                
+                <div class="space-y-6">
+
+                    <!-- Curiosidade 1 (A que você pediu) -->
+                    <div class="bg-gray-50 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 flex items-start">
+                        <!-- Ícone -->
+                        <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Mito: "Meu antivírus me protege 100%"</h3>
+                            <p class="text-gray-700 leading-relaxed"><strong>Verdade:</strong> Não há antivírus que limpe seu computador 100%. Antivírus são "reativos": eles precisam primeiro conhecer uma ameaça para depois bloqueá-la. Ameaças novas (chamadas de "dia-zero") podem passar despercebidas. A sua cautela ao navegar é a defesa mais importante.</p>
+                        </div>
+                    </div>
+
+                    <!-- Curiosidade 2 -->
+                    <div class="bg-gray-50 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 flex items-start">
+                        <!-- Ícone -->
+                        <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Mito: "O Modo Anônimo me deixa invisível"</h3>
+                            <p class="text-gray-700 leading-relaxed"><strong>Verdade:</strong> O modo anônimo (ou privado) apenas impede que o *seu navegador* salve seu histórico de busca, cookies e senhas. Ele **não** esconde sua atividade do seu provedor de internet, da sua escola/trabalho (se estiver usando a rede deles) ou dos sites que você visita.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Curiosidade 3 -->
+                    <div class="bg-gray-50 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 flex items-start">
+                        <!-- Ícone -->
+                        <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071a10 10 0 0114.142 0M1.394 9.393a15 15 0 0121.213 0" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Fato: "Wi-Fi público é um risco"</h3>
+                            <p class="text-gray-700 leading-relaxed"><strong>Verdade:</strong> Em redes Wi-Fi abertas (de cafés, aeroportos, shoppings), hackers na mesma rede podem interceptar tudo o que você faz, como se estivessem "lendo por cima do seu ombro". Evite ao máximo acessar bancos ou fazer compras. Se for inevitável, use uma <strong>VPN</strong> (Rede Privada Virtual).</p>
+                        </div>
+                    </div>
+
+                    <!-- Curiosidade 4 -->
+                    <div class="bg-gray-50 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 flex items-start">
+                        <!-- Ícone -->
+                        <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Fato: "Seu celular é um alvo valioso"</h3>
+                            <p class="text-gray-700 leading-relaxed"><strong>Verdade:</strong> Muitas pessoas protegem o computador, mas esquecem do celular. Seu celular tem seus apps de banco, suas fotos, sua localização e acesso direto ao seu e-mail. Mantenha-o sempre atualizado, use senhas fortes (ou biometria) e cuidado com os apps que você instala e as permissões que você dá a eles.</p>
+                        </div>
+                    </div>
+
+                    <!-- Curiosidade 5 -->
+                    <div class="bg-gray-50 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 flex items-start">
+                        <!-- Ícone -->
+                        <div class="flex-shrink-0">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Mito: "O cadeado (HTTPS) significa que o site é 100% seguro"</h3>
+                            <p class="text-gray-700 leading-relaxed"><strong>Verdade:</strong> O cadeado (HTTPS) apenas garante que a sua *conexão* com o site é criptografada. Isso **não** significa que o site em si é legítimo ou confiável. Sites de *phishing* (golpes) hoje em dia também usam o cadeado HTTPS para parecerem mais reais. O cadeado protege você de "espiões no meio do caminho", mas não protege você do "dono do site".</s_pre>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white p-10">
+        <div class="container mx-auto text-center">
+            <p class="font-bold text-lg mb-2">Projeto de Cidadania Global e Tecnologia</p>
+            <p class="text-gray-400">
+                (Entrega: 11/11/2025)
+            </p>
+            <p class="text-gray-500 text-sm mt-6">
+                Uma proposta de projeto web.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
